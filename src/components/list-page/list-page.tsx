@@ -20,15 +20,16 @@ type TLinkedListLoaderState = {
 };
 
 const linkedList = new LinkedList(
-  new Array(LIST_INIT_LENGTH).fill('').map(item => (item + Math.floor(Math.random() * 100)).toString())
+  new Array(LIST_INIT_LENGTH)
+    .fill("")
+    .map((item) => (item + Math.floor(Math.random() * 100)).toString())
 );
 
 export const ListPage: React.FC = () => {
-
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const [showList, setShowList] = useState<string[]>(linkedList.toString);
-  const [index, setIndex] = useState('');
-  const [extraCircleValue, setExtraCircleValue] = useState('');
+  const [index, setIndex] = useState("");
+  const [extraCircleValue, setExtraCircleValue] = useState("");
   const [topCircleIndex, setTopCircleIndex] = useState(-1);
   const [bottomCircleIndex, setBottomCircleIndex] = useState(-1);
   const [modifiedIndex, setModifiedIndex] = useState(-1);
@@ -44,11 +45,11 @@ export const ListPage: React.FC = () => {
 
   const onChangeValue = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(evt.target.value);
-  }
+  };
 
   const onChangeIndex = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setIndex(evt.target.value);
-  }
+  };
 
   function addToHead() {
     setLoaderState({ ...loaderState, addToHead: true });
@@ -61,9 +62,9 @@ export const ListPage: React.FC = () => {
     setTimeout(() => {
       setShowList(linkedList.toString);
       setTopCircleIndex(-1);
-      setExtraCircleValue('');
+      setExtraCircleValue("");
       setModifiedIndex(0);
-      setInputValue('')
+      setInputValue("");
 
       setTimeout(() => {
         setModifiedIndex(-1);
@@ -83,9 +84,9 @@ export const ListPage: React.FC = () => {
     setTimeout(() => {
       setShowList(linkedList.toString);
       setTopCircleIndex(-1);
-      setExtraCircleValue('');
+      setExtraCircleValue("");
       setModifiedIndex(linkedList.toString.length - 1);
-      setInputValue('')
+      setInputValue("");
 
       setTimeout(() => {
         setModifiedIndex(-1);
@@ -103,7 +104,7 @@ export const ListPage: React.FC = () => {
     setShowList(
       showList.map((item, index) => {
         if (index === 0) {
-          item = '';
+          item = "";
           return item;
         } else {
           return item;
@@ -114,7 +115,7 @@ export const ListPage: React.FC = () => {
     setTimeout(() => {
       setShowList(linkedList.toString);
       setBottomCircleIndex(-1);
-      setExtraCircleValue('');
+      setExtraCircleValue("");
       setLoaderState({ ...loaderState, removeFromHead: false });
     }, SHORT_DELAY_IN_MS);
   }
@@ -128,7 +129,7 @@ export const ListPage: React.FC = () => {
     setShowList(
       showList.map((item, index) => {
         if (index === showList.length - 1) {
-          item = '';
+          item = "";
           return item;
         } else {
           return item;
@@ -139,7 +140,7 @@ export const ListPage: React.FC = () => {
     setTimeout(() => {
       setShowList(linkedList.toString);
       setBottomCircleIndex(-1);
-      setExtraCircleValue('');
+      setExtraCircleValue("");
       setLoaderState({ ...loaderState, removeFromTail: false });
     }, SHORT_DELAY_IN_MS);
   }
@@ -164,7 +165,7 @@ export const ListPage: React.FC = () => {
     const interval = setInterval(() => {
       if (counter === Number(index)) {
         setTopCircleIndex(-1);
-        setExtraCircleValue('');
+        setExtraCircleValue("");
 
         setChangingIndexes([]);
         setModifiedIndex(Number(index));
@@ -173,7 +174,7 @@ export const ListPage: React.FC = () => {
         setTimeout(() => {
           setModifiedIndex(-1);
           setLoaderState({ ...loaderState, addByIndex: false });
-          setInputValue('')
+          setInputValue("");
         }, SHORT_DELAY_IN_MS);
 
         clearInterval(interval);
@@ -184,14 +185,14 @@ export const ListPage: React.FC = () => {
       setChangingIndexes([...arr]);
       counter++;
       setTopCircleIndex(counter);
-      
     }, SHORT_DELAY_IN_MS);
   }
 
   function removeByIndex() {
     setLoaderState({ ...loaderState, removeByIndex: true });
 
-    if (!index || Number(index) < 0 || Number(index) >= showList.length) return null;
+    if (!index || Number(index) < 0 || Number(index) >= showList.length)
+      return null;
 
     linkedList.deleteByIndex(Number(index));
     const arr = [0];
@@ -207,7 +208,7 @@ export const ListPage: React.FC = () => {
         setShowList(
           showList.map((item, i) => {
             if (i === Number(index)) {
-              item = '';
+              item = "";
               return item;
             } else {
               return item;
@@ -220,10 +221,10 @@ export const ListPage: React.FC = () => {
         setTimeout(() => {
           setChangingIndexes([]);
           setBottomCircleIndex(-1);
-          setExtraCircleValue('');
+          setExtraCircleValue("");
           setShowList(linkedList.toString);
           setLoaderState({ ...loaderState, removeByIndex: false });
-          setIndex('')
+          setIndex("");
         }, SHORT_DELAY_IN_MS);
         return;
       }
@@ -249,35 +250,35 @@ export const ListPage: React.FC = () => {
       <section className={styles.form}>
         <form onSubmit={handleFormSubmit}>
           <div className={styles.value}>
-            <Input 
+            <Input
               maxLength={4}
               isLimitText
               value={inputValue}
               onChange={onChangeValue}
             />
-            <Button 
-              text='Добавить в head'
+            <Button
+              text="Добавить в head"
               type="submit"
               onClick={addToHead}
               disabled={!inputValue || showList.length >= 7}
               isLoader={loaderState.addToHead}
             />
-            <Button 
-              text='Добавить в tail'
+            <Button
+              text="Добавить в tail"
               type="submit"
               onClick={addToTail}
               disabled={!inputValue || showList.length >= 7}
               isLoader={loaderState.addToTail}
             />
-            <Button 
-              text='Удалить из head'
+            <Button
+              text="Удалить из head"
               type="submit"
               onClick={removeFromHead}
               disabled={!showList.length}
               isLoader={loaderState.removeFromHead}
             />
-            <Button 
-              text='Удалить из tail'
+            <Button
+              text="Удалить из tail"
               type="submit"
               onClick={removeFromTail}
               disabled={!showList.length}
@@ -286,25 +287,29 @@ export const ListPage: React.FC = () => {
           </div>
 
           <div className={styles.index}>
-            <Input 
+            <Input
               maxLength={1}
-              placeholder='Введите индекс'
+              placeholder="Введите индекс"
               value={index}
-              type= 'number'
+              type="number"
               onChange={onChangeIndex}
             />
-            <Button 
-              text='Добавить по индексу'
+            <Button
+              text="Добавить по индексу"
               type="submit"
               onClick={addByIndex}
               disabled={!index || !inputValue}
               isLoader={loaderState.addByIndex}
             />
-            <Button 
-              text='Удалить по индексу'
+            <Button
+              text="Удалить по индексу"
               type="submit"
               onClick={removeByIndex}
-              disabled={!index || (Number(index) > showList.length - 1 ||  Number(index) < 0)}
+              disabled={
+                !index ||
+                Number(index) > showList.length - 1 ||
+                Number(index) < 0
+              }
               isLoader={loaderState.removeByIndex}
             />
           </div>
@@ -327,12 +332,11 @@ export const ListPage: React.FC = () => {
                 <Circle
                   index={index}
                   letter={item}
-                  tail={`${index === showList.length - 1 ? 'tail' : ''}`}
-                  head={`${index === 0 ? 'head' : ''}`}
+                  tail={`${index === showList.length - 1 ? "tail" : ""}`}
+                  head={`${index === 0 ? "head" : ""}`}
                   state={showColor(index)}
                 />
-                {(index !== showList.length - 1) 
-                    && <ArrowIcon />}
+                {index !== showList.length - 1 && <ArrowIcon />}
               </div>
               {index === bottomCircleIndex && (
                 <Circle
@@ -343,9 +347,9 @@ export const ListPage: React.FC = () => {
                 />
               )}
             </div>
-          )
+          );
         })}
       </section>
     </SolutionLayout>
-  )
+  );
 };

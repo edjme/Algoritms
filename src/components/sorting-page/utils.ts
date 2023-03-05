@@ -1,13 +1,13 @@
 import { ElementStates } from "../../types/element-states";
 
 interface ILetterProps {
-  symbol: string | number,
-  state?: ElementStates
+  symbol: string | number;
+  state?: ElementStates;
 }
 
 export const swap = (
-  arr: ILetterProps[], 
-  firstIndex: number, 
+  arr: ILetterProps[],
+  firstIndex: number,
   secondIndex: number
 ): void => {
   const temp = arr[firstIndex].symbol;

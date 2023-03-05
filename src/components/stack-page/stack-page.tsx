@@ -8,7 +8,6 @@ import { ElementStates } from "../../types/element-states";
 import { Stack } from "./utils";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
-
 interface IStack {
   letter: string;
   state: ElementStates;
@@ -17,24 +16,26 @@ interface IStack {
 const stack = new Stack<IStack>();
 
 export const StackPage: React.FC = () => {
-
   const stackRef = useRef(stack);
 
-  const [inputValue, setInputValue] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>("");
   const [showValue, setShowValue] = useState<IStack[]>([]);
   const [loaderAdd, setLoaderAdd] = useState<boolean>(false);
   const [loaderRemove, setLoaderRemove] = useState<boolean>(false);
 
   const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(evt.target.value);
-  }
+  };
 
   const onValueAdd = () => {
     if (!inputValue) return null;
     setLoaderAdd(true);
 
-    stackRef.current.push({ letter: inputValue, state: ElementStates.Changing });
-    setInputValue('')
+    stackRef.current.push({
+      letter: inputValue,
+      state: ElementStates.Changing,
+    });
+    setInputValue("");
     setShowValue([...stackRef.current.elements]);
 
     setTimeout(() => {
@@ -45,7 +46,7 @@ export const StackPage: React.FC = () => {
       setShowValue([...stackRef.current.elements]);
       setLoaderAdd(false);
     }, SHORT_DELAY_IN_MS);
-  }
+  };
 
   const onValueDelete = () => {
     setLoaderRemove(true);
@@ -60,42 +61,42 @@ export const StackPage: React.FC = () => {
     setTimeout(() => {
       stackRef.current.pop();
       setShowValue([...stackRef.current.elements]);
-      setLoaderRemove(false); 
+      setLoaderRemove(false);
     }, SHORT_DELAY_IN_MS);
-  }
+  };
 
   const onValuesClear = () => {
     stackRef.current.clear();
     setShowValue([...stackRef.current.elements]);
-  }
+  };
 
   return (
     <SolutionLayout title="Стек">
       <section className={styles.form}>
         <div className={styles.input}>
-          <Input 
+          <Input
             maxLength={4}
             isLimitText
             onChange={onChange}
             value={inputValue}
           />
-          <Button 
+          <Button
             onClick={onValueAdd}
-            text='Добавить'
+            text="Добавить"
             disabled={!inputValue}
             isLoader={loaderAdd}
           />
-          <Button 
+          <Button
             onClick={onValueDelete}
-            text='Удалить'
+            text="Удалить"
             disabled={!showValue.length}
             isLoader={loaderRemove}
           />
         </div>
 
-        <Button 
+        <Button
           onClick={onValuesClear}
-          text='Очистить'
+          text="Очистить"
           disabled={!showValue.length}
         />
       </section>
@@ -108,12 +109,11 @@ export const StackPage: React.FC = () => {
                 letter={item.letter}
                 key={index}
                 state={item.state}
-                head={`${index === showValue.length - 1 ? 'top' : ''}`}
+                head={`${index === showValue.length - 1 ? "top" : ""}`}
               />
-            )
-          })
-        }
+            );
+          })}
       </section>
     </SolutionLayout>
-  )
-}
+  );
+};

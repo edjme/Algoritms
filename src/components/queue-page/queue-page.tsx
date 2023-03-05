@@ -8,7 +8,6 @@ import { ElementStates } from "../../types/element-states";
 import { Queue } from "./utils";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
-
 interface IQueue {
   letter: string;
   state: ElementStates;
@@ -17,12 +16,11 @@ interface IQueue {
 const queue = new Queue<IQueue>(7);
 
 export const QueuePage: React.FC = () => {
-
   const queueRef = useRef(queue);
 
-  const [inputValue, setInputValue] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>("");
   const [showValue, setShowValue] = useState(queueRef.current.elements());
-  const [color, setColor] = useState<ElementStates>();  
+  const [color, setColor] = useState<ElementStates>();
   const [ind, setInd] = useState<number>();
   const [loaderAdd, setLoaderAdd] = useState<boolean>(false);
   const [loaderRemove, setLoaderRemove] = useState<boolean>(false);
@@ -38,16 +36,19 @@ export const QueuePage: React.FC = () => {
     if (!inputValue) return;
     setLoaderAdd(true);
 
-    queueRef.current.enqueue({ letter: inputValue, state: ElementStates.Default });
+    queueRef.current.enqueue({
+      letter: inputValue,
+      state: ElementStates.Default,
+    });
     setInd(tail + 1);
     setColor(ElementStates.Changing);
     setShowValue(queueRef.current.elements());
 
     setTimeout(() => {
-      setInputValue('');
+      setInputValue("");
       setColor(ElementStates.Default);
       setLoaderAdd(false);
-    }, SHORT_DELAY_IN_MS); 
+    }, SHORT_DELAY_IN_MS);
   };
 
   const onValueDelete = () => {
@@ -59,7 +60,7 @@ export const QueuePage: React.FC = () => {
       queueRef.current.dequeue();
       setColor(ElementStates.Default);
       setShowValue(queueRef.current.elements());
-      setLoaderRemove(false);  
+      setLoaderRemove(false);
     }, SHORT_DELAY_IN_MS);
   };
 
@@ -69,7 +70,7 @@ export const QueuePage: React.FC = () => {
   };
 
   return (
-    <SolutionLayout title='Очередь'>
+    <SolutionLayout title="Очередь">
       <section className={styles.form}>
         <div className={styles.input}>
           <Input
@@ -80,20 +81,20 @@ export const QueuePage: React.FC = () => {
           />
           <Button
             onClick={onValueAdd}
-            text='Добавить'
-            type='submit'
+            text="Добавить"
+            type="submit"
             disabled={!inputValue.length}
             isLoader={loaderAdd}
           />
-          <Button 
-            text='Удалить'
+          <Button
+            text="Удалить"
             onClick={onValueDelete}
             disabled={queue.isEmpty()}
             isLoader={loaderRemove}
           />
         </div>
-        <Button 
-          text='Очистить'
+        <Button
+          text="Очистить"
           onClick={onValuesClear}
           disabled={queue.isEmpty()}
         />
@@ -103,13 +104,13 @@ export const QueuePage: React.FC = () => {
           return (
             <Circle
               key={index}
-              letter={item?.letter ? item.letter : ''}
+              letter={item?.letter ? item.letter : ""}
               state={index === ind ? color : item?.state}
               index={index}
-              head={item?.letter && index === head ? 'head' : ''}
-              tail={item?.letter && index === tail ? 'tail' : ''}
+              head={item?.letter && index === head ? "head" : ""}
+              tail={item?.letter && index === tail ? "tail" : ""}
             />
-          )
+          );
         })}
       </section>
     </SolutionLayout>

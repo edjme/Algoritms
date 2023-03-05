@@ -11,18 +11,19 @@ import { delay } from "../../functions/functions";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
 interface INumberProps {
-  symbol: number,
-  state?: ElementStates
+  symbol: number;
+  state?: ElementStates;
 }
 
 export const SortingPage: React.FC = () => {
-
   const [showArray, setShowArray] = useState<INumberProps[]>([]);
-  const [selectedRadioBtn, setSelectedRadioBtn] = useState<string>('radioSelect');
+  const [selectedRadioBtn, setSelectedRadioBtn] =
+    useState<string>("radioSelect");
   const [loader, setLoader] = useState<boolean>(false);
-  const [direction, setDirection] = useState('');
+  const [direction, setDirection] = useState("");
 
-  const isRadioSelected = (value: string): boolean => selectedRadioBtn === value;
+  const isRadioSelected = (value: string): boolean =>
+    selectedRadioBtn === value;
 
   const changeValue = (evt: ChangeEvent<HTMLInputElement>) => {
     setSelectedRadioBtn(evt.currentTarget.value);
@@ -30,27 +31,31 @@ export const SortingPage: React.FC = () => {
 
   useEffect(() => {
     onArrayGenerate();
-  }, [])
+  }, []);
 
-  //генерация случайного массива
   const onArrayGenerate = () => {
     const getRandomArbitrary = (min: number, max: number) => {
       return Math.floor(Math.random() * (max - min) + min);
-    }
+    };
 
-    const n = getRandomArbitrary(3, 18)
-    const randomArr = Array(n).fill(null).map(() => Math.floor(Math.random() * 100))
-    
-    const arr = randomArr.map(symbol => ({symbol, state: ElementStates.Default}))
+    const n = getRandomArbitrary(3, 18);
+    const randomArr = Array(n)
+      .fill(null)
+      .map(() => Math.floor(Math.random() * 100));
 
-    setShowArray(arr)
-  }
+    const arr = randomArr.map((symbol) => ({
+      symbol,
+      state: ElementStates.Default,
+    }));
+
+    setShowArray(arr);
+  };
 
   const bubbleSort = async (arr: INumberProps[], selector: Direction) => {
     setLoader(true);
-    
+
     if (arr[0].state !== ElementStates.Default) {
-      arr.forEach(item => item.state = ElementStates.Default);
+      arr.forEach((item) => (item.state = ElementStates.Default));
     }
 
     for (let i = 0; i < arr.length; i++) {
@@ -60,8 +65,10 @@ export const SortingPage: React.FC = () => {
         setShowArray([...arr]);
         await delay(500);
         if (
-          (selector === Direction.Ascending && arr[j].symbol > arr[j + 1].symbol) ||
-          (selector === Direction.Descending && arr[j].symbol < arr[j + 1].symbol)
+          (selector === Direction.Ascending &&
+            arr[j].symbol > arr[j + 1].symbol) ||
+          (selector === Direction.Descending &&
+            arr[j].symbol < arr[j + 1].symbol)
         ) {
           swap(arr, j, j + 1);
         }
@@ -71,14 +78,14 @@ export const SortingPage: React.FC = () => {
     }
     setShowArray([...arr]);
     setLoader(false);
-    setDirection('');
-  }
+    setDirection("");
+  };
 
   const selectionSort = async (arr: INumberProps[], selector: Direction) => {
     setLoader(true);
-    
+
     if (arr[0].state !== ElementStates.Default) {
-      arr.forEach(item => item.state = ElementStates.Default);
+      arr.forEach((item) => (item.state = ElementStates.Default));
     }
     for (let i = 0; i < arr.length - 1; i++) {
       let minInd = i;
@@ -88,10 +95,16 @@ export const SortingPage: React.FC = () => {
         arr[j].state = ElementStates.Changing;
         setShowArray([...arr]);
         await delay(SHORT_DELAY_IN_MS);
-        if (selector === Direction.Ascending && arr[minInd].symbol > arr[j].symbol) {
+        if (
+          selector === Direction.Ascending &&
+          arr[minInd].symbol > arr[j].symbol
+        ) {
           minInd = j;
         }
-        if (selector === Direction.Descending && arr[maxInd].symbol < arr[j].symbol) {
+        if (
+          selector === Direction.Descending &&
+          arr[maxInd].symbol < arr[j].symbol
+        ) {
           maxInd = j;
         }
         arr[j].state = ElementStates.Default;
@@ -104,96 +117,90 @@ export const SortingPage: React.FC = () => {
     arr[arr.length - 1].state = ElementStates.Modified;
     setShowArray([...arr]);
     setLoader(false);
-    setDirection('');
-  }
+    setDirection("");
+  };
 
   const onClickBubbleSortAsc = () => {
     setDirection(Direction.Ascending);
     bubbleSort(showArray, Direction.Ascending);
-  }
+  };
 
   const onClickBubbleSortDesc = () => {
     setDirection(Direction.Descending);
     bubbleSort(showArray, Direction.Descending);
-  }
+  };
 
   const onClickSelectionSortAsc = () => {
     setDirection(Direction.Ascending);
     selectionSort(showArray, Direction.Ascending);
-  }
+  };
 
   const onClickSelectionSortDesc = () => {
     setDirection(Direction.Descending);
     selectionSort(showArray, Direction.Descending);
-  }
-  
-  // 2 в 1 по возрастанию
-  const onClickSortAsc = () => {
-    //setDirection(Direction.Ascending)
-    isRadioSelected('radioBubble') ? onClickBubbleSortAsc() : onClickSelectionSortAsc()
-  }
+  };
 
-  // 2 в 1 по убыванию
+  //по возрастанию
+  const onClickSortAsc = () => {
+    isRadioSelected("radioBubble")
+      ? onClickBubbleSortAsc()
+      : onClickSelectionSortAsc();
+  };
+
+  //по убыванию
   const onClickSortDesc = () => {
-    //setDirection(Direction.Descending)
-    isRadioSelected('radioBubble') ? onClickBubbleSortDesc() : onClickSelectionSortDesc()
-  }
-  
+    isRadioSelected("radioBubble")
+      ? onClickBubbleSortDesc()
+      : onClickSelectionSortDesc();
+  };
+
   return (
     <SolutionLayout title="Сортировка массива">
       <section className={styles.main}>
         <div className={styles.radiobutton}>
-          <RadioInput 
-            label="Выбор" 
+          <RadioInput
+            label="Выбор"
             value="radioSelect"
             checked={isRadioSelected("radioSelect")}
             onChange={changeValue}
           />
-          <RadioInput 
+          <RadioInput
             label="Пузырёк"
             value="radioBubble"
             checked={isRadioSelected("radioBubble")}
-            onChange={changeValue} 
+            onChange={changeValue}
           />
         </div>
         <div className={styles.button}>
-          <Button 
+          <Button
             onClick={onClickSortAsc}
-            text='По возрастанию'
+            text="По возрастанию"
             sorting={Direction.Ascending}
             disabled={loader}
             isLoader={direction === Direction.Ascending}
-            extraClass={styles.buttonWidth}           
+            extraClass={styles.buttonWidth}
           />
-          <Button 
+          <Button
             onClick={onClickSortDesc}
-            text='По убыванию'
+            text="По убыванию"
             sorting={Direction.Descending}
             disabled={loader}
-            isLoader={direction === Direction.Descending}  
-            extraClass={styles.buttonWidth}             
+            isLoader={direction === Direction.Descending}
+            extraClass={styles.buttonWidth}
           />
         </div>
-        <Button 
+        <Button
           onClick={onArrayGenerate}
-          text='Новый массив'
+          text="Новый массив"
           disabled={loader}
         />
       </section>
 
       <section className={styles.columns}>
-      {
-        showArray.map((item, index) => {
-          return (
-            <Column
-              index={item.symbol}
-              key={index}
-              state={item.state}
-            />
-          )
-        })
-      }
+        {showArray.map((item, index) => {
+          return <Column index={item.symbol} key={index} state={item.state} />;
+        })}
       </section>
     </SolutionLayout>
-  )
+  );
 };
