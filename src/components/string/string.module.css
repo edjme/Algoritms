@@ -1,0 +1,14 @@
+.form {
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 377px 133px;
+    gap: 12px;
+    justify-content: center;
+  }
+  
+  .circles {
+    margin: 120px auto 0;
+    display: flex;
+    justify-content: center;
+    gap: 16px;  
+  }
