@@ -35,6 +35,7 @@ export const SortingPage: React.FC = () => {
     onArrayGenerate();
   }, []);
 
+  //генерация случайного массива
   const onArrayGenerate = () => {
     setShowArray(randomArray());
   };
@@ -98,15 +99,17 @@ export const SortingPage: React.FC = () => {
     selectionSort(showArray, Direction.Descending);
   };
 
-  //по возрастанию
+  // 2 в 1 по возрастанию
   const onClickSortAsc = () => {
+    //setDirection(Direction.Ascending)
     isRadioSelected("radioBubble")
       ? onClickBubbleSortAsc()
       : onClickSelectionSortAsc();
   };
 
-  //по убыванию
+  // 2 в 1 по убыванию
   const onClickSortDesc = () => {
+    //setDirection(Direction.Descending)
     isRadioSelected("radioBubble")
       ? onClickBubbleSortDesc()
       : onClickSelectionSortDesc();

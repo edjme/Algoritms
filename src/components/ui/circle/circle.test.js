@@ -32,7 +32,8 @@ describe('Тестирование компонента Circle', () => {
       it('С react-элементом в head', () => {
             const circle = renderer
               .create( < Circle head = {
-                  < Circle / >
+                  <
+                  Circle / >
                 }
                 />)
                 .toJSON(); expect(circle).toMatchSnapshot();
@@ -48,7 +49,8 @@ describe('Тестирование компонента Circle', () => {
           it('С react-элементом в tail', () => {
               const circle = renderer
                 .create( < Circle tail = {
-                    < Circle / >
+                    <
+                    Circle / >
                   }
                   />)
                   .toJSON(); expect(circle).toMatchSnapshot();

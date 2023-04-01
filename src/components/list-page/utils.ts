@@ -18,8 +18,16 @@ export class LinkedList {
 
   constructor(initArr: string[]) {
     this.head = this.toLinkedList(initArr);
+    //this.head = null;
     this.tail = this.find();
+    //initArr.forEach(item => this.addByIndex(item, 0))
   }
+
+  /*
+    _toLinkedList(arr: string[]): LinkedListNode<string> | null {
+      return arr.map(item => this.addByIndex(item, 0))
+    }
+    */
 
   toLinkedList(arr: string[]): LinkedListNode<string> | null {
     return arr.reduce(

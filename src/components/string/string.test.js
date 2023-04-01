@@ -1,23 +1,38 @@
-import { BrowserRouter as Router } from "react-router-dom";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { StringComponent } from "./string";
+import {
+  BrowserRouter as Router
+} from "react-router-dom";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor
+} from "@testing-library/react";
+import {
+  StringComponent
+} from "./string";
 
 describe('String reverses correctly', () => {
 
   const stringReverseTest = (value, reversedValue) => {
 
     return async () => {
-      render(
-        <Router>
-          <StringComponent />
-        </Router>
+      render( <
+        Router >
+        <
+        StringComponent / >
+        <
+        /Router>
       );
 
       const input = screen.getByTestId('input');
       const button = screen.getByText('Развернуть');
       const letters = screen.getAllByTestId('circles')
 
-      fireEvent.change(input, { target: { value } });
+      fireEvent.change(input, {
+        target: {
+          value
+        }
+      });
       fireEvent.click(button);
 
       await waitFor(
@@ -25,8 +40,9 @@ describe('String reverses correctly', () => {
           expect(letters?.textContent).toBe(
             reversedValue
           );
-        },
-        { timeout: 1000 }
+        }, {
+          timeout: 1000
+        }
       );
     }
   }
